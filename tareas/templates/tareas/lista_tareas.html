@@ -1,0 +1,66 @@
+{% extends "tareas/base.html" %}
+{% block title %}Mis tareas{% endblock %}
+{% block content %}
+    <div class="mx-auto w-9/10 max-w-180 grow py-9">
+        <!-- Encabezado -->
+        <div class="mb-8 flex items-center justify-between">
+            <div>
+                <h1 class="text-2xl font-semibold text-slate-800">¡Hola {{ request.user }}!</h1>
+                {% if tareas %}
+                    <p class="mt-1 text-sm text-slate-500">Estas son tus tareas actuales.</p>
+                {% endif %}
+            </div>
+        </div>
+        <!-- Lista de tareas -->
+        <main class="space-y-4">
+            {% for tarea in tareas %}
+                <article class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md">
+                    <!-- Título y estado -->
+                    <div class="flex flex-col justify-between gap-4">
+                        <div class="flex justify-between">
+                            <h2 class="text-lg font-semibold text-slate-800">{{ tarea.titulo }}</h2>
+                            {% if tarea.completado %}
+                                <span class="shrink-0 rounded-full bg-green-100 px-2.5 py-1 text-xs font-medium text-green-700">Completada</span>
+                            {% else %}
+                                <span class="shrink-0 rounded-full bg-amber-100 px-2.5 py-1 text-xs font-medium text-amber-700">Pendiente</span>
+                            {% endif %}
+                        </div>
+                        <p class="mt-1 text-sm text-slate-500">
+                            {% if tarea.descripcion %} {{ tarea.descripcion }} {% else %} Sin
+                                descripción {% endif %}
+                        </p>
+                    </div>
+                    <!-- Información -->
+                    <div class="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-slate-100 pt-4 text-sm text-slate-500">
+                        <span>
+                            <span class="font-medium text-slate-600">Prioridad:</span>
+                            {{ tarea.get_prioridad_display }}
+                        </span>
+                        <span>
+                            <span class="font-medium text-slate-600">Fecha límite:</span>
+                            {{ tarea.fecha_limite|default:"Sin fecha límite" }}
+                        </span>
+                    </div>
+                    <!-- Acciones -->
+                    <div class="mt-4 flex items-center gap-3">
+                        <a href="{% url 'tareas:editar_tarea' tarea.id %}"
+                           class="inline-flex items-center rounded-lg bg-slate-100 px-3 py-1.5 text-sm font-medium text-slate-700 transition hover:bg-slate-200 focus:ring-2 focus:ring-slate-400 focus:outline-none">
+                            Editar
+                        </a>
+                        <a href="{% url 'tareas:eliminar_tarea' tarea.id %}"
+                           class="text-sm font-medium text-red-500 transition hover:text-red-600">Eliminar</a>
+                    </div>
+                </article>
+            {% empty %}
+                <div class="rounded-xl border border-dashed border-slate-300 bg-white py-12 text-center">
+                    <h2 class="text-lg font-medium text-slate-700">Aún no tienes tareas</h2>
+                    <p class="mt-1 text-sm text-slate-500">Crea tu primera tarea para comenzar.</p>
+                    <a href="{% url 'tareas:nueva_tarea' %}"
+                       class="mt-5 inline-block rounded-lg bg-slate-800 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-700">
+                        Crear tarea
+                    </a>
+                </div>
+            {% endfor %}
+        </main>
+    </div>
+{% endblock %}
