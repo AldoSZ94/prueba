@@ -71,26 +71,3 @@ class TareaForm(forms.ModelForm):
                 }
             ),
         }
-
-
-# from datetime import date
-# from django import forms
-# from .models import Tarea
-
-
-# class TareaForm(forms.ModelForm):
-
-#     class Meta:
-#         model = Tarea
-#         fields = ["titulo", "descripcion", "prioridad", "fecha_limite", "completado"]
-#         widgets = {
-#             "titulo": forms.TextInput(attrs={"placeholder": "Título de la Tarea"}),
-#             "descripcion": forms.Textarea(
-#                 attrs={"placeholder": "Descripción de la Tarea"}
-#             ),
-#             "prioridad": forms.Select(),
-#             "fecha_limite": forms.DateInput(
-#                 attrs={"type": "date", "min": date.today().isoformat()}
-#             ),
-#             "completado": forms.CheckboxInput(),
-#         }
