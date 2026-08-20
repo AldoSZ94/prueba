@@ -7,7 +7,8 @@ def registro(request):
     if request.method == "POST":
         form = RegistroForm(request.POST)
         if form.is_valid():
-            form.save()
+            usuario = form.save()
+            login(request, usuario)
             return redirect("tareas:lista_tareas")
     else:
         form = RegistroForm()
